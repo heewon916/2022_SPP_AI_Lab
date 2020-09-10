@@ -3,9 +3,9 @@
 from lab2_utils import TextbookStack, apply_sequence
 
 # from lab1_solutions import a_star_search, a_star_search
-from lab2_solutions import a_star_search
+# from lab2_solutions import a_star_search
 
-# from lab2 import a_star_search
+from lab2 import a_star_search
 import itertools
 import time
 
