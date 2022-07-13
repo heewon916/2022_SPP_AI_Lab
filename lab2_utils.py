@@ -10,23 +10,26 @@ class TextbookStack(object):
         self.num_books = len(initial_order)
 
         for i, a in enumerate(initial_orientations):
+            # check the datas are in correct range
             assert i in initial_order
             assert a == 1 or a == 0
 
-        self.order = np.array(initial_order)
-        self.orientations = np.array(initial_orientations)
+        self.order = np.array(initial_order)                # set the order 
+        self.orientations = np.array(initial_orientations)  # set the faced up/down
 
     def flip_stack(self, position):
+        # check if the position is over the range of num of books 
         assert position <= self.num_books
 
+        # flip the book orders and the faced up/down 
         self.order[:position] = self.order[:position][::-1]
         self.orientations[:position] = np.abs(self.orientations[:position] - 1)[::-1]
 
     def check_ordered(self):
+        # check all the faced up/down and the orders 
         for idx, front_matter in enumerate(self.orientations):
             if (idx != self.order[idx]) or (front_matter != 1):
                 return False
-
         return True
 
     def copy(self):
@@ -41,6 +44,9 @@ class TextbookStack(object):
 
 
 def apply_sequence(stack, sequence):
+    # on the given stack
+    # fliping progressed 
+    # following the sequence we set-up
     new_stack = stack.copy()
     for flip in sequence:
         new_stack.flip_stack(flip)
