@@ -3,8 +3,12 @@ from heapq import heappush, heappop
 
 
 def a_star_search(stack):
-
+    # INPUT 
+    ## TextbookStack(initial_order=[3, 2, 1, 0], initial_orientations=[0, 0, 0, 0])
+    # OUTPUT
+    ## "a_star_search": [4]
     flip_sequence = []
+    
 
     # --- v ADD YOUR CODE HERE v --- #
     
