@@ -7,7 +7,7 @@ def a_star_search(stack):
     flip_sequence = []
 
     # --- v ADD YOUR CODE HERE v --- #
-
+    
     return flip_sequence
 
     # ---------------------------- #
