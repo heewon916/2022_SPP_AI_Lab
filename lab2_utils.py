@@ -16,6 +16,32 @@ class TextbookStack(object):
 
         self.order = np.array(initial_order)                # set the order 
         self.orientations = np.array(initial_orientations)  # set the faced up/down
+        
+        ##--edit
+        self.g_cnt = 0    # the count of fliping
+        self.h_cnt = 0    # the num of pair satisfies the conditions
+    
+    ##--edit: heuristic function
+    def heuristic(self): 
+        # should check 4 conditions on the pair of stacks
+        # so we should use self.order, self.orientations
+        for idx, front_matter in enumerate(self.orientations, step=2):
+            self.next = idx + 1
+            if (self.order[idx] > self.order[self.next]):
+                self.h_cnt += 1
+            if ((self.order[idx] > self.order[self.next]) and 
+                (self.orientations[self.next] == 1 and front_matter == 1)):
+                self.h_cnt += 1
+            if ((self.orientations[self.next],front_matter) == (0,1)
+                or (self.orientations[self.next],front_matter) == (1,0)):
+                self.h_cnt += 1
+            if ((self.order[idx] < self.order[self.next])
+                and (self.orientations[self.next],front_matter) == (0,0)):
+                self.h_cnt += 1         
+    
+    ##--edit: to calc the g_cnt; the num of the flip count 
+    def g_func(self):
+        self.g_cnt += 1
 
     def flip_stack(self, position):
         # check if the position is over the range of num of books 
@@ -24,9 +50,19 @@ class TextbookStack(object):
         # flip the book orders and the faced up/down 
         self.order[:position] = self.order[:position][::-1]
         self.orientations[:position] = np.abs(self.orientations[:position] - 1)[::-1]
+        
+        ##--edit
+        self.g_func()
+        self.heuristic()
+
+        ##--edit: intialize the variable to use it again on each nodes
+        self.g_cnt = 0
+        self.h_cnt = 0
+        
 
     def check_ordered(self):
         # check all the faced up/down and the orders 
+        ##-- [!] will use it at final evaluation
         for idx, front_matter in enumerate(self.orientations):
             if (idx != self.order[idx]) or (front_matter != 1):
                 return False
@@ -41,7 +77,6 @@ class TextbookStack(object):
 
     def __str__(self):
         return f"TextbookStack:\n\torder: {self.order}\n\torientations:{self.orientations}"
-
 
 def apply_sequence(stack, sequence):
     # on the given stack
